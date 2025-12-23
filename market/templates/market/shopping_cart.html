@@ -1,0 +1,87 @@
+{% extends 'market/base.html' %}
+{% load static %}
+{% load market_filters %}
+
+{% block title %}购物车 - 特色时令产品集市平台{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">购物车</h1>
+    <p class="page-description">管理您选择的产品</p>
+</div>
+
+{% if cart_items.exists %}
+    <div class="cart-container">
+        <div class="cart-table-wrapper">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>产品名称</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>
+                                <div class="cart-product">
+                                    <div class="cart-product-image">
+                                        <img src="{{ item.specialty|product_image }}" alt="{{ item.specialty.name }}">
+                                    </div>
+                                    <div class="cart-product-info">
+                                        <h4 class="cart-product-name">{{ item.specialty.name }}</h4>
+                                        <p class="cart-product-origin">{{ item.specialty.origin.province }}{{ item.specialty.origin.city }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="cart-price">¥{{ item.specialty.price }}</td>
+                            <td>
+                                <div class="cart-quantity">
+                                    {{ item.quantity }}
+                                </div>
+                            </td>
+                            <td class="cart-subtotal">¥{{ item.specialty.price|mul:item.quantity|floatformat:2 }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'delete_cart_item' item.cart_id %}" class="cart-delete-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">删除</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="cart-summary">
+            <div class="cart-total">
+                <h3>总金额: <span class="total-amount">¥{{ total_amount }}</span></h3>
+            </div>
+            <div class="cart-actions">
+                <a href="{% url 'index' %}" class="btn btn-outline">继续购物</a>
+                <a href="{% url 'create_order' %}" class="btn btn-primary">去结算</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="empty-cart">
+        <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+        </div>
+        <h3>您的购物车是空的</h3>
+        <p>快去选择您喜欢的特色产品吧</p>
+        <a href="{% url 'index' %}" class="btn btn-primary">去购物</a>
+    </div>
+{% endif %}
+{% endblock %}

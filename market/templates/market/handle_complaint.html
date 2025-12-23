@@ -1,0 +1,60 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">处理投诉</h1>
+    <p class="page-subtitle">查看投诉详情并提交处理意见</p>
+</div>
+
+<div class="complaint-container">
+    <div class="complaint-order-info">
+        <h2 class="complaint-section-title">投诉信息</h2>
+        <div class="complaint-info-content">
+            <div class="complaint-info-row">
+                <span class="complaint-info-label">投诉编号:</span>
+                <span class="complaint-info-value">{{ complaint.complaint_id }}</span>
+            </div>
+            <div class="complaint-info-row">
+                <span class="complaint-info-label">投诉用户:</span>
+                <span class="complaint-info-value">{{ complaint.user.username }}</span>
+            </div>
+            <div class="complaint-info-row">
+                <span class="complaint-info-label">订单编号:</span>
+                <span class="complaint-info-value">{{ complaint.order.order_id }}</span>
+            </div>
+            <div class="complaint-info-row">
+                <span class="complaint-info-label">投诉类别:</span>
+                <span class="complaint-info-value">{{ complaint.complaint_type }}</span>
+            </div>
+            <div class="complaint-info-row">
+                <span class="complaint-info-label">投诉原因:</span>
+                <span class="complaint-info-value">{{ complaint.reason|linebreaks }}</span>
+            </div>
+            <div class="complaint-info-row">
+                <span class="complaint-info-label">投诉时间:</span>
+                <span class="complaint-info-value">{{ complaint.complaint_time }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="complaint-form-container">
+        <h2 class="complaint-section-title">处理意见</h2>
+        <form method="POST" class="complaint-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="opinion" class="form-label">处理意见</label>
+                <textarea id="opinion" name="opinion" class="form-control" rows="6" placeholder="请输入处理意见..." required></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">提交处理</button>
+                <a href="{% url 'admin_complaints' %}" class="btn btn-outline">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}特色时令产品集市平台{% endblock %}</title>
+    <!-- 引入CSS文件 -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="flex-view justify-between align-center">
+                <div class="logo">
+                    <h1>特色时令产品集市平台</h1>
+                </div>
+                <div class="header-actions">
+                    {% if user.is_authenticated %}
+                        <span>欢迎，{{ user.username }}</span>
+                        <a href="{% url 'logout' %}" class="header-link">登出</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="header-link">登录</a>
+                        <a href="{% url 'register' %}" class="header-link">注册</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 导航菜单 -->
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="{% url 'index' %}" class="nav-link">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'index' %}" class="nav-link">产品浏览</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'user_specialties' %}" class="nav-link">我的产品</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'shopping_cart' %}" class="nav-link">购物车</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'user_orders' %}" class="nav-link">我的订单</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'user_collections' %}" class="nav-link">我的收藏</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'publish_specialty' %}" class="nav-link">发布产品</a>
+                    </li>
+                    {% if user.role == '管理员' %}
+                        <li class="nav-item">
+                            <a href="{% url 'admin_specialties' %}" class="nav-link">管理产品</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'admin_users' %}" class="nav-link">管理用户</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'admin_complaints' %}" class="nav-link">处理投诉</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2024 特色时令产品集市平台</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 引入JavaScript文件 -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

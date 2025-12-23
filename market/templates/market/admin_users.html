@@ -1,0 +1,63 @@
+{% extends 'market/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">管理用户</h1>
+    <p class="page-subtitle">查看和管理平台上的所有用户</p>
+</div>
+
+<div class="admin-users-container">
+    {% if users.exists %}
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>手机号</th>
+                        <th>邮箱</th>
+                        <th>注册时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td class="admin-table-name">{{ user.username }}</td>
+                            <td>
+                                <span class="role-badge {% if user.role == '管理员' %}role-admin{% elif user.role == '商家' %}role-merchant{% else %}role-customer{% endif %}">
+                                    {{ user.role }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge {% if user.status == '正常' %}status-active{% else %}status-inactive{% endif %}">
+                                    {{ user.status }}
+                                </span>
+                            </td>
+                            <td>{{ user.phone|default:'-' }}</td>
+                            <td>{{ user.email|default:'-' }}</td>
+                            <td>{{ user.register_time }}</td>
+                            <td>
+                                <div class="admin-table-actions">
+                                    {% if user.role != '管理员' %}
+                                        <a href="{% url 'admin_toggle_user_status' user.user_id %}" class="btn {% if user.status == '正常' %}btn-danger{% else %}btn-success{% endif %} btn-sm">
+                                            {% if user.status == '正常' %}冻结{% else %}解冻{% endif %}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            <h3 class="empty-state-title">暂无用户</h3>
+            <p class="empty-state-description">目前平台上没有用户</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

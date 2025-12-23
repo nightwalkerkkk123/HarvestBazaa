@@ -1,0 +1,166 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block title %}登录 - 特色时令产品集市平台{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<style>
+/* 弹窗样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background-color: #fff2f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #ff4d4f;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.modal-message {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.65);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.modal-button {
+    background-color: #1890ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+    background-color: #40a9ff;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 冻结用户弹窗 -->
+<div class="modal-overlay" id="frozenModal">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+        </div>
+        <h3 class="modal-title">账户已被冻结</h3>
+        <p class="modal-message">您的账户已被管理员冻结，如需解冻请联系管理员或发送邮件至support@example.com</p>
+        <button class="modal-button" onclick="closeModal()">我知道了</button>
+    </div>
+</div>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">用户登录</h1>
+            <p class="auth-subtitle">欢迎回到特色时令产品集市平台</p>
+        </div>
+        
+        {% if error_message %}
+            <div class="alert alert-error">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block">登录</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>还没有账号？ <a href="{% url 'register' %}" class="auth-link">立即注册</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+// 检查是否需要显示冻结弹窗
+document.addEventListener('DOMContentLoaded', function() {
+    {% if show_frozen_modal %}
+    showModal();
+    {% endif %}
+});
+
+function showModal() {
+    const modal = document.getElementById('frozenModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // 防止背景滚动
+}
+
+function closeModal() {
+    const modal = document.getElementById('frozenModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // 恢复滚动
+}
+</script>
+{% endblock %}

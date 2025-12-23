@@ -1,0 +1,61 @@
+{% extends 'market/base.html' %}
+{% load static %}
+{% load market_filters %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/collections.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">我的收藏</h1>
+    <p class="page-subtitle">查看和管理您收藏的所有产品</p>
+</div>
+
+<div class="user-collections-container">
+    {% if collections.exists %}
+        <div class="collection-grid">
+            {% for collection in collections %}
+                <div class="collection-card">
+                    <div class="collection-img">
+                        <img src="{{ collection.specialty|product_image }}" alt="{{ collection.specialty.name }}">
+                    </div>
+                    <div class="collection-info">
+                        <h3 class="collection-name">{{ collection.specialty.name }}</h3>
+                        <div class="collection-meta">
+                            <span class="collection-category">{{ collection.specialty.category }}</span>
+                            <span class="collection-origin">{{ collection.specialty.origin.province }}{{ collection.specialty.origin.city }}{{ collection.specialty.origin.district }}</span>
+                        </div>
+                        <div class="collection-price">¥{{ collection.specialty.price }}</div>
+                        <div class="collection-description">
+                            {{ collection.specialty.description|truncatechars:100 }}
+                        </div>
+                        <div class="collection-actions">
+                            <a href="{% url 'specialty_detail' collection.specialty.specialty_id %}" class="btn btn-outline btn-sm">查看详情</a>
+                            {% if collection.specialty.status == '上架' %}
+                                <form method="POST" action="{% url 'add_to_cart' collection.specialty.specialty_id %}" class="add-to-cart-form">
+                                    {% csrf_token %}
+                                    <div class="quantity-input">
+                                        <input type="number" name="quantity" value="1" min="1" class="form-input">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">加入购物车</button>
+                                </form>
+                            {% endif %}
+                            <a href="{% url 'cancel_collect' collection.collect_id %}" class="btn btn-danger btn-sm">取消收藏</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">❤️</div>
+            <h3 class="empty-state-title">您还没有收藏任何产品</h3>
+            <p class="empty-state-description">去发现您喜欢的产品吧</p>
+            <div class="empty-state-actions">
+                <a href="{% url 'index' %}" class="btn btn-primary">去浏览产品</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

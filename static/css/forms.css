@@ -1,0 +1,832 @@
+/* 表单页面样式 */
+
+.form-container {
+  max-width: 600px;
+  margin: 24px auto;
+  background: #fff;
+  border-radius: var(--border-radius-base);
+  padding: 24px;
+  box-shadow: var(--box-shadow-base);
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: var(--font-size-base);
+  line-height: 1.5715;
+  color: rgba(0, 0, 0, 0.85);
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: var(--border-radius-base);
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.form-control::placeholder {
+  color: #bfbfbf;
+}
+
+.form-text {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-col {
+  flex: 1;
+}
+
+/* 登录/注册页面 */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  position: relative;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../images/login-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0 0 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.auth-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-color), #40a9ff);
+  border-radius: 3px;
+}
+
+.auth-subtitle {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 16px 0 0;
+  font-weight: 400;
+}
+
+/* 表单动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-form {
+  margin-top: 24px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.auth-form .form-group {
+  margin-bottom: 28px;
+  position: relative;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.auth-form .form-group:nth-child(1) { animation-delay: 0.1s; }
+.auth-form .form-group:nth-child(2) { animation-delay: 0.2s; }
+.auth-form .form-group:nth-child(3) { animation-delay: 0.3s; }
+.auth-form .form-group:nth-child(4) { animation-delay: 0.4s; }
+.auth-form .form-group:nth-child(5) { animation-delay: 0.5s; }
+.auth-form .form-group:nth-child(6) { animation-delay: 0.6s; }
+.auth-form .form-group:nth-child(7) { animation-delay: 0.7s; }
+
+/* 输入框内容动态效果 */
+.auth-form .form-control,
+.auth-form input[type="text"],
+.auth-form input[type="password"],
+.auth-form input[type="email"],
+.auth-form select {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-form .form-control::after,
+.auth-form input[type="text"]::after,
+.auth-form input[type="password"]::after,
+.auth-form input[type="email"]::after,
+.auth-form select::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.auth-form .form-control:focus::after,
+.auth-form input[type="text"]:focus::after,
+.auth-form input[type="password"]:focus::after,
+.auth-form input[type="email"]:focus::after,
+.auth-form select:focus::after {
+  left: 100%;
+}
+
+/* 表单组标签动画 */
+.auth-form .form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 15px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.auth-form .form-group:focus-within label {
+  color: var(--primary-color);
+  transform: translateX(4px);
+}
+
+.auth-form .form-control:hover,
+.auth-form input[type="text"]:hover,
+.auth-form input[type="password"]:hover,
+.auth-form input[type="email"]:hover,
+.auth-form select:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.auth-form .form-control:focus,
+.auth-form input[type="text"]:focus,
+.auth-form input[type="password"]:focus,
+.auth-form input[type="email"]:focus,
+.auth-form select:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.15);
+  background-color: #fff;
+  transform: translateY(-2px);
+}
+
+.auth-form .form-control::placeholder,
+.auth-form input[type="text"]::placeholder,
+.auth-form input[type="password"]::placeholder,
+.auth-form input[type="email"]::placeholder,
+.auth-form select::placeholder {
+  color: #bfbfbf;
+  font-size: 14px;
+  transition: opacity 0.3s;
+}
+
+.auth-form .form-control:focus::placeholder,
+.auth-form input[type="text"]:focus::placeholder,
+.auth-form input[type="password"]:focus::placeholder,
+.auth-form input[type="email"]:focus::placeholder,
+.auth-form select:focus::placeholder {
+  opacity: 0.7;
+}
+
+.auth-form select.form-control,
+.auth-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath fill='%23666' d='M7 10.5L2 5.5h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+}
+
+.auth-form select.form-control:hover,
+.auth-form select:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath fill='%231890ff' d='M7 10.5L2 5.5h10z'/%3E%3C/svg%3E");
+}
+
+/* 输入框图标效果 */
+.auth-form .form-group {
+  position: relative;
+}
+
+.auth-form .form-group::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--primary-color), #40a9ff);
+  transition: width 0.3s ease;
+  border-radius: 1px;
+}
+
+.auth-form .form-group:focus-within::before {
+  width: 100%;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.auth-footer p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.auth-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.auth-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin-top: 8px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out 0.8s forwards;
+}
+
+.btn-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-block:hover::before {
+  left: 100%;
+}
+
+.btn-block:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(24, 144, 255, 0.4);
+  background-color: #40a9ff;
+}
+
+.btn-block:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+/* 表单提交加载效果 */
+.btn-block.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn-block.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 表单成功提交效果 */
+.form-success {
+  position: relative;
+  overflow: hidden;
+}
+
+.form-success::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(82, 196, 26, 0.1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.form-success.show::after {
+  transform: scaleX(1);
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 12px 0;
+  text-align: center;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.65);
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.auth-tab.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: 500;
+}
+
+.auth-input {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.auth-input .form-control {
+  padding-left: 40px;
+}
+
+.auth-actions {
+  margin-top: 24px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.auth-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.auth-link:hover {
+  color: #40a9ff;
+}
+
+/* 错误提示 */
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.alert-error {
+  background-color: rgba(245, 34, 45, 0.1);
+  border: 1px solid rgba(245, 34, 45, 0.2);
+  color: var(--error-color);
+}
+
+.alert-success {
+  background-color: rgba(82, 196, 26, 0.1);
+  border: 1px solid rgba(82, 196, 26, 0.2);
+  color: var(--success-color);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.success-message {
+  color: var(--success-color);
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* 表单验证状态 */
+.form-group.has-error .form-control,
+.form-group.has-error input[type="text"],
+.form-group.has-error input[type="password"],
+.form-group.has-error input[type="email"],
+.form-group.has-error select {
+  border-color: var(--error-color);
+  background-color: rgba(245, 34, 45, 0.05);
+  animation: shake 0.5s;
+}
+
+.form-group.has-success .form-control,
+.form-group.has-success input[type="text"],
+.form-group.has-success input[type="password"],
+.form-group.has-success input[type="email"],
+.form-group.has-success select {
+  border-color: var(--success-color);
+  background-color: rgba(82, 196, 26, 0.05);
+}
+
+.form-group.has-error label {
+  color: var(--error-color);
+}
+
+.form-group.has-success label {
+  color: var(--success-color);
+}
+
+.form-group.has-error::before {
+  background: linear-gradient(to right, var(--error-color), #ff7875);
+  width: 100%;
+}
+
+.form-group.has-success::before {
+  background: linear-gradient(to right, var(--success-color), #95de64);
+  width: 100%;
+}
+
+/* 输入框验证图标 */
+.form-group.has-error .form-control,
+.form-group.has-error input[type="text"],
+.form-group.has-error input[type="password"],
+.form-group.has-error input[type="email"],
+.form-group.has-error select,
+.form-group.has-success .form-control,
+.form-group.has-success input[type="text"],
+.form-group.has-success input[type="password"],
+.form-group.has-success input[type="email"],
+.form-group.has-success select {
+  padding-right: 40px;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.form-group.has-error .form-control,
+.form-group.has-error input[type="text"],
+.form-group.has-error input[type="password"],
+.form-group.has-error input[type="email"],
+.form-group.has-error select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23f5222d' d='M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'/%3E%3C/svg%3E");
+}
+
+.form-group.has-success .form-control,
+.form-group.has-success input[type="text"],
+.form-group.has-success input[type="password"],
+.form-group.has-success input[type="email"],
+.form-group.has-success select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%2352c41a' d='M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm3.78-9.72a.75.75 0 0 0-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z'/%3E%3C/svg%3E");
+}
+
+/* 错误提示动画 */
+.error-message {
+  color: var(--error-color);
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  animation: fadeInDown 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+/* 文件上传 */
+.file-upload {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: 100%;
+}
+
+.file-upload input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px dashed #d9d9d9;
+  border-radius: var(--border-radius-base);
+  background-color: #fafafa;
+  transition: all 0.3s;
+}
+
+.file-upload:hover .file-upload-label {
+  border-color: var(--primary-color);
+}
+
+.file-upload-icon {
+  margin-right: 8px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.file-preview {
+  margin-top: 16px;
+}
+
+.file-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--border-radius-base);
+}
+
+/* 多步骤表单 */
+.steps {
+  display: flex;
+  margin-bottom: 32px;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: #f0f0f0;
+  z-index: 1;
+}
+
+.step.active:not(:last-child)::after {
+  background: var(--primary-color);
+}
+
+.step-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.step.active .step-icon {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.step.completed .step-icon {
+  background: var(--success-color);
+  color: #fff;
+}
+
+.step-title {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.step.active .step-title,
+.step.completed .step-title {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+}
+
+/* 投诉页面样式 */
+.complaint-container {
+  margin-top: 24px;
+  display: grid;
+  gap: 24px;
+}
+
+.complaint-order-info {
+  background: #fff;
+  border-radius: var(--border-radius-base);
+  padding: 24px;
+  box-shadow: var(--box-shadow-base);
+}
+
+.complaint-section-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 16px;
+  color: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 12px;
+}
+
+.complaint-info-content {
+  display: grid;
+  gap: 12px;
+}
+
+.complaint-info-row {
+  display: flex;
+  align-items: center;
+}
+
+.complaint-info-label {
+  width: 100px;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 500;
+}
+
+.complaint-info-value {
+  flex: 1;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.complaint-total-amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--error-color);
+}
+
+.complaint-form-container {
+  background: #fff;
+  border-radius: var(--border-radius-base);
+  padding: 24px;
+  box-shadow: var(--box-shadow-base);
+}
+
+.complaint-form {
+  max-width: 600px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .form-container {
+    margin: 16px;
+    padding: 16px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .auth-container {
+    padding: 16px;
+  }
+  
+  .auth-card {
+    padding: 24px 16px;
+  }
+  
+  .complaint-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .complaint-info-label {
+    width: auto;
+  }
+}

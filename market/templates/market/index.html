@@ -1,0 +1,85 @@
+{% extends 'market/base.html' %}
+{% load static %}
+{% load market_filters %}
+
+{% block title %}首页 - 特色时令产品集市平台{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
+<style>
+    .product-category {
+        color: #4684e3;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .product-category:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">特色时令产品</h1>
+    <p class="page-description">发现最新鲜的时令特色产品</p>
+</div>
+
+<!-- 搜索和筛选区域 -->
+<div class="search-filter">
+    <form method="GET" class="search-form">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="搜索产品名称" value="{{ search_query }}">
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 产品列表 -->
+{% if specialties.exists %}
+    <div class="product-grid">
+        {% for specialty in specialties %}
+            <div class="product-item">
+                <div class="product-image">
+                    <img src="{{ specialty|product_image }}" alt="{{ specialty.name }}">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">{{ specialty.name }}</h3>
+                    <div class="product-meta">
+                        <a href="?category={{ specialty.category }}" class="product-category">{{ specialty.category }}</a>
+                        <span class="product-origin">{{ specialty.origin.province }}{{ specialty.origin.city }}</span>
+                    </div>
+                    <div class="product-price">¥{{ specialty.price }}</div>
+                    <div class="product-period">销售期: {{ specialty.sale_start_time }} 至 {{ specialty.sale_end_time }}</div>
+                    <p class="product-desc">{{ specialty.description|truncatechars:100 }}</p>
+                </div>
+                <div class="product-actions">
+                    <a href="{% url 'specialty_detail' specialty.specialty_id %}" class="btn btn-outline">查看详情</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'collect_specialty' specialty.specialty_id %}" class="btn btn-outline">收藏</a>
+                        <form method="POST" action="{% url 'add_to_cart' specialty.specialty_id %}" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="number" name="quantity" value="1" min="1" class="form-control quantity-input">
+                                <button type="submit" class="btn btn-primary">加入购物车</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+        </div>
+        <h3>暂无符合条件的产品</h3>
+        <p>请尝试调整搜索条件或稍后再试</p>
+    </div>
+{% endif %}
+{% endblock %}

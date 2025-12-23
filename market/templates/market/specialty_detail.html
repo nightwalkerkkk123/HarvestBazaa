@@ -1,0 +1,103 @@
+{% extends 'market/base.html' %}
+{% load static %}
+{% load market_filters %}
+
+{% block title %}{{ specialty.name }} - 特色时令产品集市平台{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- 消息显示 -->
+{% if messages %}
+    <div class="message-container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="detail-container">
+    <div class="detail-left">
+        <!-- 产品图片显示 -->
+        <div class="detail-image">
+            <img src="{{ specialty|product_image }}" alt="{{ specialty.name }}">
+        </div>
+        
+        <!-- 产品描述 -->
+        <div class="detail-description">
+            <h2>产品描述</h2>
+            <div class="description-content">
+                {{ specialty.description|linebreaks }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-right">
+        <!-- 产品信息 -->
+        <div class="detail-info">
+            <h1 class="detail-title">{{ specialty.name }}</h1>
+            
+            <div class="info-item">
+                <span class="info-label">类别</span>
+                <span class="info-value">{{ specialty.category }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">产地</span>
+                <span class="info-value">{{ specialty.origin.province }}{{ specialty.origin.city }}{{ specialty.origin.district }} ({{ specialty.origin.origin_name }})</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">价格</span>
+                <span class="info-value price">¥{{ specialty.price }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">销售期</span>
+                <span class="info-value">{{ specialty.sale_start_time }} 至 {{ specialty.sale_end_time }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">发布时间</span>
+                <span class="info-value">{{ specialty.create_time }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">状态</span>
+                <span class="info-value status-{{ specialty.status }}">{{ specialty.status }}</span>
+            </div>
+            
+                    <!-- 操作按钮 -->
+            {% if user.is_authenticated %}
+                <div class="detail-actions">
+                    {% if specialty.status == '上架' %}
+                        <form method="POST" action="{% url 'add_to_cart' specialty.specialty_id %}" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="number" name="quantity" value="1" min="1" class="form-control" placeholder="数量">
+                                <button type="submit" class="btn btn-primary btn-block">加入购物车</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                    
+                    <a href="{% url 'collect_specialty' specialty.specialty_id %}" class="btn btn-outline btn-block">收藏产品</a>
+                    
+                    {% if user == specialty.publisher or user.is_staff %}
+                        <a href="{% url 'edit_specialty' specialty.specialty_id %}" class="btn btn-info btn-block">编辑产品</a>
+                    {% endif %}
+                    
+                    {% if user == specialty.publisher %}
+                        <a href="{% url 'toggle_specialty_status' specialty.specialty_id %}" class="btn btn-danger btn-block">
+                            {% if specialty.status == '上架' %}下架产品{% else %}上架产品{% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

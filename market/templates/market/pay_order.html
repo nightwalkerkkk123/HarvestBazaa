@@ -1,0 +1,179 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">支付订单</h1>
+    <p class="page-subtitle">确认订单信息并完成支付</p>
+</div>
+
+<div class="order-detail-container">
+    <div class="order-info-card">
+        <h2 class="order-info-title">订单信息</h2>
+        <div class="order-info-content">
+            <div class="order-info-row">
+                <span class="order-info-label">订单编号:</span>
+                <span class="order-info-value">{{ order.order_id }}</span>
+            </div>
+            <div class="order-info-row">
+                <span class="order-info-label">订单状态:</span>
+                <span class="order-status status-{{ order.status }}">{{ order.status }}</span>
+            </div>
+            <div class="order-info-row">
+                <span class="order-info-label">订单时间:</span>
+                <span class="order-info-value">{{ order.order_time }}</span>
+            </div>
+            <div class="order-info-row">
+                <span class="order-info-label">总金额:</span>
+                <span class="order-info-value order-total-amount">¥{{ order.total_amount }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="payment-method-card">
+        <h2 class="payment-method-title">支付方式</h2>
+        <div class="payment-methods">
+            <div class="payment-method selected">
+                <input type="radio" id="alipay" name="payment_method" value="alipay" checked>
+                <label for="alipay">
+                    <i class="fab fa-alipay"></i>
+                    支付宝
+                </label>
+            </div>
+            <div class="payment-method">
+                <input type="radio" id="wechat" name="payment_method" value="wechat">
+                <label for="wechat">
+                    <i class="fab fa-weixin"></i>
+                    微信支付
+                </label>
+            </div>
+            <div class="payment-method">
+                <input type="radio" id="bank" name="payment_method" value="bank">
+                <label for="bank">
+                    <i class="fas fa-credit-card"></i>
+                    银行卡支付
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="order-actions">
+        <a href="{% url 'order_detail' order.order_id %}" class="btn btn-outline">返回订单详情</a>
+        <form method="post" action="{% url 'pay_order' order.order_id %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">确认支付 ¥{{ order.total_amount }}</button>
+        </form>
+    </div>
+</div>
+
+<style>
+.payment-method-card {
+    margin-bottom: 20px;
+}
+
+.payment-method-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.payment-method:hover {
+    border-color: #3498db;
+}
+
+.payment-method.selected {
+    border-color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.payment-method input[type="radio"] {
+    margin-right: 10px;
+}
+
+.payment-method label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.payment-method i {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.payment-method i.fa-alipay {
+    color: #1677ff;
+}
+
+.payment-method i.fa-weixin {
+    color: #07c160;
+}
+
+.payment-method i.fa-credit-card {
+    color: #ff6600;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    color: #fff;
+}
+
+.btn-primary:focus {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: #fff;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+@media (max-width: 768px) {
+    .payment-methods {
+        flex-direction: column;
+    }
+    
+    .order-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .order-actions a,
+    .order-actions form {
+        width: 100%;
+    }
+    
+    .order-actions button {
+        width: 100%;
+    }
+}
+</style>
+
+<!-- 添加Font Awesome图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

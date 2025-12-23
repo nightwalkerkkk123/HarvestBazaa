@@ -1,0 +1,79 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- 消息显示 -->
+{% if messages %}
+    <div class="message-container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="page-header">
+    <h1 class="page-title">我的产品</h1>
+    <p class="page-subtitle">管理您发布的所有产品</p>
+</div>
+
+<div class="user-specialties-container">
+    {% if specialties.exists %}
+        <div class="user-specialties-table">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>产品名称</th>
+                        <th>类别</th>
+                        <th>价格</th>
+                        <th>销售期</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for specialty in specialties %}
+                        <tr>
+                            <td class="admin-table-name">{{ specialty.name }}</td>
+                            <td>{{ specialty.category }}</td>
+                            <td class="admin-table-price">¥{{ specialty.price }}</td>
+                            <td>{{ specialty.sale_start_time }} 至 {{ specialty.sale_end_time }}</td>
+                            <td>
+                                <span class="status-badge {% if specialty.status == '上架' %}status-active{% else %}status-inactive{% endif %}">
+                                    {{ specialty.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="admin-table-actions">
+                                    <a href="{% url 'specialty_detail' specialty.specialty_id %}" class="btn btn-outline btn-sm">查看</a>
+                                    <a href="{% url 'edit_specialty' specialty.specialty_id %}" class="btn btn-info btn-sm">编辑</a>
+                                    <a href="{% url 'toggle_specialty_status' specialty.specialty_id %}" class="btn {% if specialty.status == '上架' %}btn-danger{% else %}btn-success{% endif %} btn-sm">
+                                        {% if specialty.status == '上架' %}下架{% else %}上架{% endif %}
+                                    </a>
+                                    <a href="{% url 'delete_specialty' specialty.specialty_id %}" class="btn btn-danger btn-sm" onclick="return confirm('确定要删除产品 "{{ specialty.name }}" 吗？此操作不可恢复！')">删除</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📦</div>
+            <h3 class="empty-state-title">您还没有发布任何产品</h3>
+            <p class="empty-state-description">开始发布您的第一个产品吧</p>
+            <div class="empty-state-actions">
+                <a href="{% url 'publish_specialty' %}" class="btn btn-primary">发布新产品</a>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if specialties.exists %}
+        <div class="user-specialties-actions">
+            <a href="{% url 'publish_specialty' %}" class="btn btn-primary">发布新产品</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

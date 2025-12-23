@@ -1,0 +1,84 @@
+{% extends 'market/base.html' %}
+{% load static %}
+{% load market_filters %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">订单详情</h1>
+    <p class="page-subtitle">查看订单的详细信息和状态</p>
+</div>
+
+<div class="order-detail-container">
+    <div class="order-info-card">
+        <h2 class="order-info-title">订单信息</h2>
+        <div class="order-info-content">
+            <div class="order-info-row">
+                <span class="order-info-label">订单编号:</span>
+                <span class="order-info-value">{{ order.order_id }}</span>
+            </div>
+            <div class="order-info-row">
+                <span class="order-info-label">订单状态:</span>
+                <span class="order-status status-{{ order.status }}">{{ order.status }}</span>
+            </div>
+            <div class="order-info-row">
+                <span class="order-info-label">订单时间:</span>
+                <span class="order-info-value">{{ order.order_time }}</span>
+            </div>
+            {% if order.pay_time %}
+            <div class="order-info-row">
+                <span class="order-info-label">支付时间:</span>
+                <span class="order-info-value">{{ order.pay_time }}</span>
+            </div>
+            {% endif %}
+            <div class="order-info-row">
+                <span class="order-info-label">总金额:</span>
+                <span class="order-info-value order-total-amount">¥{{ order.total_amount }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="order-items-card">
+        <h2 class="order-items-title">订单项</h2>
+        <div class="order-items-table-wrapper">
+            <table class="order-items-table">
+                <thead>
+                    <tr>
+                        <th>产品图片</th>
+                        <th>产品名称</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <td class="order-item-image">
+                                <img src="{{ item.specialty|product_image }}" alt="{{ item.specialty.name }}" class="order-item-thumbnail">
+                            </td>
+                            <td class="order-item-name">{{ item.specialty.name }}</td>
+                            <td class="order-item-price">¥{{ item.unit_price }}</td>
+                            <td class="order-item-quantity">{{ item.quantity }}</td>
+                            <td class="order-item-subtotal">¥{{ item.unit_price|mul:item.quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="order-actions">
+        <a href="{% url 'user_orders' %}" class="btn btn-outline">返回订单列表</a>
+        {% if order.status == '待支付' %}
+            <a href="{% url 'pay_order' order.order_id %}" class="btn btn-primary">立即支付</a>
+        {% endif %}
+        {% if order.status in '已支付' or order.status == '已完成' %}
+            <a href="{% url 'submit_complaint' order.order_id %}" class="btn btn-danger">提交投诉</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

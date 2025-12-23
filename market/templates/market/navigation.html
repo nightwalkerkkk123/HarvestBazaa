@@ -1,0 +1,166 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block title %}页面导航 - 特色时令产品集市平台{% endblock %}
+
+{% block extra_css %}
+<style>
+    .nav-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    .nav-title {
+        text-align: center;
+        margin-bottom: 40px;
+        color: var(--primary-color);
+    }
+    
+    .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .nav-card {
+        background: #fff;
+        border-radius: var(--border-radius-base);
+        padding: 20px;
+        box-shadow: var(--box-shadow-base);
+        transition: all 0.3s;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .nav-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-color);
+    }
+    
+    .nav-card-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .nav-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .nav-link-item {
+        margin-bottom: 10px;
+    }
+    
+    .nav-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        padding: 8px 12px;
+        display: block;
+        border-radius: var(--border-radius-base);
+        transition: all 0.2s;
+    }
+    
+    .nav-link:hover {
+        background-color: rgba(24, 144, 255, 0.1);
+        color: #40a9ff;
+    }
+    
+    .nav-description {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="nav-container">
+    <h1 class="nav-title">页面导航</h1>
+    
+    <div class="nav-grid">
+        <!-- 基础页面 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">基础页面</h2>
+            <p class="nav-description">网站的基础功能页面</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><a href="{% url 'index' %}" class="nav-link">首页</a></li>
+                <li class="nav-link-item"><a href="{% url 'login' %}" class="nav-link">登录页面</a></li>
+                <li class="nav-link-item"><a href="{% url 'register' %}" class="nav-link">注册页面</a></li>
+            </ul>
+        </div>
+        
+        <!-- 用户功能 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">用户功能</h2>
+            <p class="nav-description">用户相关功能页面</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><a href="{% url 'user_specialties' %}" class="nav-link">我的产品</a></li>
+                <li class="nav-link-item"><a href="{% url 'shopping_cart' %}" class="nav-link">购物车</a></li>
+                <li class="nav-link-item"><a href="{% url 'user_orders' %}" class="nav-link">我的订单</a></li>
+                <li class="nav-link-item"><a href="{% url 'user_collections' %}" class="nav-link">我的收藏</a></li>
+                <li class="nav-link-item"><a href="{% url 'publish_specialty' %}" class="nav-link">发布产品</a></li>
+            </ul>
+        </div>
+        
+        <!-- 管理员功能 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">管理员功能</h2>
+            <p class="nav-description">管理员专用功能页面</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><a href="{% url 'admin_specialties' %}" class="nav-link">管理产品</a></li>
+                <li class="nav-link-item"><a href="{% url 'admin_users' %}" class="nav-link">管理用户</a></li>
+                <li class="nav-link-item"><a href="{% url 'admin_complaints' %}" class="nav-link">处理投诉</a></li>
+            </ul>
+        </div>
+        
+        <!-- 产品相关 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">产品相关</h2>
+            <p class="nav-description">产品浏览和详情页面</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><a href="{% url 'index' %}" class="nav-link">产品列表</a></li>
+                <li class="nav-link-item"><a href="#" class="nav-link" onclick="alert('需要选择具体产品查看详情')">产品详情</a></li>
+            </ul>
+        </div>
+        
+        <!-- 订单和投诉 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">订单和投诉</h2>
+            <p class="nav-description">订单管理和投诉处理页面</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><a href="#" class="nav-link" onclick="alert('需要选择具体订单查看详情')">订单详情</a></li>
+                <li class="nav-link-item"><a href="#" class="nav-link" onclick="alert('需要选择具体订单提交投诉')">提交投诉</a></li>
+                <li class="nav-link-item"><a href="{% url 'handle_complaint' complaint_id=1 %}" class="nav-link">处理投诉</a></li>
+            </ul>
+        </div>
+        
+        <!-- API端点 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">API端点</h2>
+            <p class="nav-description">系统API接口</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><a href="/api/classifications/" class="nav-link" target="_blank">分类列表API</a></li>
+                <li class="nav-link-item"><a href="/api/tags/" class="nav-link" target="_blank">标签列表API</a></li>
+                <li class="nav-link-item"><a href="/api/things/" class="nav-link" target="_blank">商品列表API</a></li>
+                <li class="nav-link-item"><a href="/api/notices/" class="nav-link" target="_blank">公告列表API</a></li>
+                <li class="nav-link-item"><a href="/api/comments/" class="nav-link" target="_blank">评论列表API</a></li>
+            </ul>
+        </div>
+        
+        <!-- 测试账号 -->
+        <div class="nav-card">
+            <h2 class="nav-card-title">测试账号</h2>
+            <p class="nav-description">用于测试的账号信息</p>
+            <ul class="nav-links">
+                <li class="nav-link-item"><strong>管理员账号:</strong> admin / admin123</li>
+                <li class="nav-link-item"><strong>普通用户:</strong> user / user123</li>
+                <li class="nav-link-item"><small>如需其他测试账号，请注册新用户</small></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

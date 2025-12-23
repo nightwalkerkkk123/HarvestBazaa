@@ -1,0 +1,219 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block title %}创建订单 - 特色时令产品集市平台{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-title">
+        <h2>创建订单</h2>
+    </div>
+    
+    <div class="order-container">
+        <div class="order-items">
+            <h3>订单商品</h3>
+            {% if cart_items %}
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>商品名称</th>
+                            <th>产地</th>
+                            <th>单价</th>
+                            <th>数量</th>
+                            <th>小计</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.specialty.name }}</td>
+                            <td>{{ item.specialty.origin.name }}</td>
+                            <td>¥{{ item.specialty.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>¥{{ item.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right"><strong>总计：</strong></td>
+                            <td class="total-amount">¥{{ total_amount }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            {% else %}
+                <p>购物车中没有商品，<a href="{% url 'index' %}">去购物</a></p>
+            {% endif %}
+        </div>
+        
+        <div class="order-form">
+            <h3>收货信息</h3>
+            <form method="post">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label for="{{ form.receiver.id_for_label }}">{{ form.receiver.label }}</label>
+                    {{ form.receiver }}
+                    {% if form.receiver.errors %}
+                        <div class="text-danger">
+                            {{ form.receiver.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                        <div class="text-danger">
+                            {{ form.phone.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+                    {{ form.address }}
+                    {% if form.address.errors %}
+                        <div class="text-danger">
+                            {{ form.address.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">提交订单</button>
+                    <a href="{% url 'shopping_cart' %}" class="btn btn-secondary">返回购物车</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.order-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.order-items, .order-form {
+    flex: 1;
+    min-width: 300px;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.order-table th, .order-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.order-table .total-amount {
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 18px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-danger {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+@media (max-width: 768px) {
+    .order-container {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

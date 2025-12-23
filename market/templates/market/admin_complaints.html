@@ -1,0 +1,49 @@
+{% extends 'market/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">待处理投诉</h1>
+    <p class="page-subtitle">管理和处理用户提交的投诉</p>
+</div>
+
+<div class="admin-complaints-container">
+    {% if complaints.exists %}
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>投诉编号</th>
+                        <th>用户</th>
+                        <th>订单编号</th>
+                        <th>投诉类别</th>
+                        <th>投诉时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                        <tr>
+                            <td class="admin-table-id">{{ complaint.complaint_id }}</td>
+                            <td>{{ complaint.user.username }}</td>
+                            <td>{{ complaint.order.order_id }}</td>
+                            <td>{{ complaint.complaint_type }}</td>
+                            <td>{{ complaint.complaint_time }}</td>
+                            <td>
+                                <div class="admin-table-actions">
+                                    <a href="{% url 'handle_complaint' complaint.complaint_id %}" class="btn btn-primary btn-sm">处理</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h3 class="empty-state-title">暂无待处理的投诉</h3>
+            <p class="empty-state-description">目前没有需要处理的投诉</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

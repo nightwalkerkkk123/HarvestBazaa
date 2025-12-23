@@ -1,0 +1,343 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block title %}编辑产品 - {{ specialty.name }} - 特色时令产品集市平台{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<style>
+    /* 确保页面背景色与登录页面一致 */
+    body {
+        background-color: #f8f9fa;
+        background-image: none;
+    }
+    
+    /* 覆盖任何可能影响表单的样式 */
+    .auth-container {
+        max-width: 90%;
+        width: 100%;
+        margin: 40px auto;
+        padding: 0 15px;
+    }
+    
+    @media (min-width: 1200px) {
+        .auth-container {
+            max-width: 1000px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .auth-container {
+            max-width: 95%;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+    }
+    
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    /* 文件上传样式 */
+    .file-upload {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .file-input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    
+    .file-label {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .file-icon {
+        margin-right: 5px;
+    }
+    
+    .file-name {
+        font-size: 14px;
+        color: #6c757d;
+    }
+    
+    /* 输入组样式 */
+    .input-group {
+        display: flex;
+        align-items: stretch;
+    }
+    
+    .input-prefix {
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-right: none;
+        border-radius: 4px 0 0 4px;
+        color: #495057;
+    }
+    
+    .input-group .form-control {
+        border-radius: 0 4px 4px 0;
+    }
+    
+    /* 表单帮助文本 */
+    .form-help {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    
+    /* 隐藏原有的页面标题 */
+    .page-header {
+        display: none;
+    }
+    
+    /* 简化表单区域 */
+    .form-section {
+        margin-bottom: 25px;
+    }
+    
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .form-row {
+        margin-bottom: 15px;
+    }
+    
+    .form-row:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* 增加表单内部元素宽度 */
+    .auth-card {
+        width: 100%;
+        padding: 30px;
+    }
+    
+    @media (max-width: 768px) {
+        .auth-card {
+            padding: 20px 15px;
+        }
+    }
+    
+    .form-control {
+        width: 100% !important;
+    }
+    
+    textarea.form-control {
+        width: 100% !important;
+        min-height: 120px;
+    }
+    
+    @media (max-width: 768px) {
+        textarea.form-control {
+            min-height: 100px;
+        }
+    }
+    
+    .file-upload {
+        width: 100%;
+    }
+    
+    .input-group {
+        width: 100%;
+    }
+    
+    .input-group .form-control {
+        width: 100% !important;
+    }
+    
+    /* 当前图片样式 */
+    .current-image {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+    }
+    
+    .current-image p {
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .img-thumbnail {
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 消息显示 -->
+{% if messages %}
+    <div class="message-container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">编辑产品</h1>
+            <p class="auth-subtitle">修改产品信息并更新到平台</p>
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" class="auth-form">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <h3 class="section-title">产地信息</h3>
+                
+                <div class="form-group">
+                    <label for="origin_name" class="form-label">产地名称</label>
+                    <input type="text" id="origin_name" name="origin_name" class="form-control" 
+                           value="{{ form.origin_name.value|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="province" class="form-label">省份</label>
+                    <input type="text" id="province" name="province" class="form-control" 
+                           value="{{ form.province.value|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city" class="form-label">城市</label>
+                    <input type="text" id="city" name="city" class="form-control" 
+                           value="{{ form.city.value|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="district" class="form-label">区县</label>
+                    <input type="text" id="district" name="district" class="form-control" 
+                           value="{{ form.district.value|default:'' }}" required>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">产品信息</h3>
+                
+                <div class="form-group">
+                    <label for="category" class="form-label">产品类别</label>
+                    <input type="text" id="category" name="category" class="form-control" 
+                           value="{{ form.category.value|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name" class="form-label">产品名称</label>
+                    <input type="text" id="name" name="name" class="form-control" 
+                           value="{{ form.name.value|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image" class="form-label">产品图片</label>
+                    <div class="file-upload">
+                        <input type="file" id="image" name="image" class="file-input" accept="image/*">
+                        <label for="image" class="file-label">
+                            <span class="file-icon">📷</span>
+                            <span class="file-text">选择新图片</span>
+                        </label>
+                        <span class="file-name">未选择文件（留空则不修改）</span>
+                    </div>
+                    <div class="form-help">支持JPG、PNG等常见图片格式，建议尺寸不超过2MB。留空则不修改现有图片。</div>
+                    
+                    {% if specialty.image %}
+                    <div class="current-image">
+                        <p>当前图片：</p>
+                        <img src="{{ specialty.image.url }}" alt="{{ specialty.name }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="description" class="form-label">产品描述</label>
+                    <textarea id="description" name="description" class="form-control" rows="4">{{ form.description.value|default:'' }}</textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">销售信息</h3>
+                
+                <div class="form-group">
+                    <label for="price" class="form-label">销售价格</label>
+                    <div class="input-group">
+                        <span class="input-prefix">¥</span>
+                        <input type="number" id="price" name="price" class="form-control" step="0.01" min="0" 
+                               value="{{ form.price.value|default:'' }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sale_start_time" class="form-label">销售开始时间</label>
+                    <input type="date" id="sale_start_time" name="sale_start_time" class="form-control" 
+                           value="{{ form.sale_start_time.value|date:'Y-m-d'|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sale_end_time" class="form-label">销售结束时间</label>
+                    <input type="date" id="sale_end_time" name="sale_end_time" class="form-control" 
+                           value="{{ form.sale_end_time.value|date:'Y-m-d'|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status" class="form-label">产品状态</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="上架" {% if form.status.value == '上架' %}selected{% endif %}>上架</option>
+                        <option value="下架" {% if form.status.value == '下架' %}selected{% endif %}>下架</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">保存修改</button>
+            <div style="margin-top: 15px; text-align: center;">
+                <a href="{% url 'specialty_detail' specialty.specialty_id %}" style="color: #6c757d; text-decoration: none; font-size: 14px;">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 文件上传交互
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('image');
+        const fileName = document.querySelector('.file-name');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                fileName.textContent = this.files[0].name;
+            } else {
+                fileName.textContent = '未选择文件（留空则不修改）';
+            }
+        });
+    });
+</script>
+{% endblock %}

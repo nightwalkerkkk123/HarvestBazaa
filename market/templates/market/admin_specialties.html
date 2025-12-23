@@ -1,0 +1,59 @@
+{% extends 'market/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">管理产品</h1>
+    <p class="page-subtitle">查看和管理平台上的所有产品</p>
+</div>
+
+<div class="admin-specialties-container">
+    {% if specialties.exists %}
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>产品名称</th>
+                        <th>类别</th>
+                        <th>价格</th>
+                        <th>销售期</th>
+                        <th>状态</th>
+                        <th>发布者</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for specialty in specialties %}
+                        <tr>
+                            <td class="admin-table-name">{{ specialty.name }}</td>
+                            <td>{{ specialty.category }}</td>
+                            <td class="admin-table-price">¥{{ specialty.price }}</td>
+                            <td>{{ specialty.sale_start_time }} 至 {{ specialty.sale_end_time }}</td>
+                            <td>
+                                <span class="status-badge {% if specialty.status == '上架' %}status-active{% else %}status-inactive{% endif %}">
+                                    {{ specialty.status }}
+                                </span>
+                            </td>
+                            <td>{{ specialty.publisher.username }}</td>
+                            <td>
+                                <div class="admin-table-actions">
+                                    <a href="{% url 'specialty_detail' specialty.specialty_id %}" class="btn btn-outline btn-sm">查看</a>
+                                    <a href="{% url 'edit_specialty' specialty.specialty_id %}" class="btn btn-info btn-sm">编辑</a>
+                                    <a href="{% url 'admin_toggle_specialty' specialty.specialty_id %}" class="btn {% if specialty.status == '上架' %}btn-danger{% else %}btn-success{% endif %} btn-sm">
+                                        {% if specialty.status == '上架' %}下架{% else %}上架{% endif %}
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📦</div>
+            <h3 class="empty-state-title">暂无产品</h3>
+            <p class="empty-state-description">目前平台上没有产品</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
