@@ -16,19 +16,9 @@ For this "特色时令产品集市平台" (Specialty Seasonal Products Market Pl
 - **易记性**：简短、易发音，具有良好的域名潜力
 - **品牌友好**：听起来温暖、诱人，符合平台专注于特色时令商品的定位
 
-### Alternative options:
-If you prefer something more descriptive, consider these alternatives:
-- **SeasonalSpecialtyBazaar** (more explicit about product types)
-- **BountyHarvestMarket** (emphasizes abundance and freshness)
-- **TerroirMarket** (highlights regional specialty products, but more niche)
 
-### 备选名称：
-如果您更喜欢更具描述性的名称，可以考虑以下选项：
-- **SeasonalSpecialtyBazaar**（季节特色集市）：更明确地说明了产品类型
-- **BountyHarvestMarket**（丰收市场）：强调丰富性和新鲜度
-- **TerroirMarket**（风土市场）：突出区域特色产品，但定位更为小众
 
-HarvestBazaar在描述性、易记性和品牌友好性之间取得了最佳平衡，非常适合您的平台。
+HarvestBazaar在描述性、易记性和品牌友好性之间取得了最佳平衡。
 
 ## 项目概述
 特色时令产品集市平台是一个集产品展示、销售、管理于一体的电子商务平台，专注于推广和销售各类时令特色产品。平台支持用户注册、产品管理、订单处理、收藏、购物车和投诉处理等功能。
